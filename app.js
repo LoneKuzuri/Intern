@@ -1,6 +1,6 @@
 
 //set budget ko laagi
-const totalBudget = document.getElementById('budget-amount');
+let totalBudget = document.getElementById('budget-amount');
 
 const setBudgetBtn = document.getElementById('setBudget');
 
@@ -23,20 +23,34 @@ setExpenseBtn.addEventListener('click',()=>{
     const expenseName = document.getElementById('expense-name').value;
     const expenseBudget = parseFloat(document.getElementById('expense-budget').value);
     const totalExpense = document.getElementById('total-expenses');
+    const budgetWarning = document.getElementById('warning-message');
     
 
     if(!totalBudget || !expenseDate || !expenseName || isNaN(expenseBudget)){
         alert("Please fill the empty fields!!!");
         return;
     }
-    totalExpense.textContent = expenseBudget;
 
+    totalExpense.textContent = expenseBudget;
+    
+    //expense ra budget equal aayo bhani more expense add garna namilni
+    if((totalExpenseAmount + expenseBudget) >  expenseBudget){
+        alert("No budget left for more expenses!!!");
+        return;
+    }
+   
     //add expense ko onclick ma summary ma 
     //expense amount add hudai janchha
    totalExpenseAmount += expenseBudget;
-   document.getElementById('total-expenses').textContent = totalExpenseAmount;
+   console.log(expenseBudget);
+   
 
-    
+   if (totalExpenseAmount > parseFloat(totalBudget.textContent)) {
+    alert("You are out of Budget!!!");
+}
+   
+    document.getElementById('total-expenses').textContent = totalExpenseAmount;
+
     const expenseTable = document.getElementById('expense-table-body');
     //table ma row rakhni
     const newRow = document.createElement('tr');
@@ -68,6 +82,8 @@ setExpenseBtn.addEventListener('click',()=>{
     document.getElementById('expense-budget').value = '';
     document.getElementById('expense-date').value = '';
 
+
+   
     //delete function ko kaam
  deleteBtn.addEventListener('click',()=>{
     totalExpenseAmount -= parseFloat(budgetCell.textContent);
@@ -76,14 +92,15 @@ setExpenseBtn.addEventListener('click',()=>{
 })
 
 editBtn.addEventListener('click', ()=>{
+    totalExpenseAmount -= parseFloat(budgetCell.textContent);
+    totalExpense.textContent = totalExpenseAmount;
 
+    document.getElementById('expense-date').value = dateCell.textContent;
+    document.getElementById('expense-name').value = nameCell.textContent;
+    document.getElementById('expense-budget').value = budgetCell.textContent;
 
-})
-
-
-   
-    
-    
+    expenseTable.removeChild(newRow);
+})  
 })
  
 

@@ -10,7 +10,7 @@ body{
     max-width: 600px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     background: #0aeb8d;
-
+    border-radius: 10px;
 }
 
 h1, h2{
@@ -34,7 +34,9 @@ button{
     padding: 8px;
     border-radius: 6px;
     cursor: pointer;
-
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-right: 5px;
 }
 
 button:hover{
@@ -45,7 +47,8 @@ select{
     padding: 8px;
     border-radius: 6px;
     cursor: pointer;
-    background-color: #d1c0b1;
+    background-color: #01ccffbd;
+    font-size: 14px;
 }
 
 .summary{
@@ -53,8 +56,10 @@ select{
  padding: 8px;
  border-radius: 10px;
  margin-bottom: 15px;
-
+ font-weight: bold;
+ color: red;
 }
+
 
 
 table{
