@@ -26,6 +26,7 @@ setExpenseBtn.addEventListener('click',()=>{
     const budgetWarning = document.getElementById('warning-message');
     
 
+
     if(!totalBudget || !expenseDate || !expenseName || isNaN(expenseBudget)){
         alert("Please fill the empty fields!!!");
         return;
@@ -35,7 +36,9 @@ setExpenseBtn.addEventListener('click',()=>{
     
     //expense ra budget equal aayo bhani more expense add garna namilni
     if((totalExpenseAmount + expenseBudget) >  expenseBudget){
+
         alert("No budget left for more expenses!!!");
+        budgetWarning.innerText =`No budget left for more expenses!!!`;
         return;
     }
    
@@ -45,9 +48,9 @@ setExpenseBtn.addEventListener('click',()=>{
    console.log(expenseBudget);
    
 
-   if (totalExpenseAmount > parseFloat(totalBudget.textContent)) {
-    alert("You are out of Budget!!!");
-}
+//    if (totalExpenseAmount > parseFloat(totalBudget.textContent)) {
+//     alert("You are out of Budget!!!");
+// }
    
     document.getElementById('total-expenses').textContent = totalExpenseAmount;
 
