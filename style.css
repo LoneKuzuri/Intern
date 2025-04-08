@@ -1,32 +1,49 @@
 body{
     font-family: 'Segoe UI', sans-serif;
-    background: #0adceb;
-    padding: 3px;
+    background:linear-gradient(to right, #0adceb, #0aeb8d); 
+    background-size: 100% 100%;
+    min-height: 100vh;
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
 
 .container{
     margin: auto;
     padding: 25px;
     max-width: 600px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background: #0aeb8d;
-    border-radius: 10px;
+    box-shadow: 0 8 20px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    border-radius: 12px;
+    width: 100%
 }
+
+/* container lai slightly scale up garchha */
+.container:hover{
+    transform: scale(1.01);
+}
+
 
 h1, h2{
     text-align: center;
     color: teal;
-}
-
-.input-class{
     margin-bottom: 20px;
 }
 
 input{
-    display: cover;
-    padding: 8px;
-    margin-top: 6px;
+    /* display: cover; */
+    padding: 10px;
+    margin-top: 8px;
     border-radius: 6px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+
+}
+
+.input-class{
+    margin-bottom: 20px;
 }
 
 button{
@@ -37,6 +54,7 @@ button{
     font-weight: bold;
     transition: background-color 0.3s ease;
     margin-right: 5px;
+    margin-top: 5px;
 }
 
 button:hover{
@@ -59,8 +77,6 @@ select{
  font-weight: bold;
  color: red;
 }
-
-
 
 table{
     margin-top: 15px;
