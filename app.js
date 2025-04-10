@@ -9,18 +9,18 @@ const expenseDateInput = document.getElementById('expense-date');
 
 //each month ko starting ra ending date provide garni
 const monthRanges = {
-    January: { start: "01-01", end: "01-31" },
-    February: { start: "02-01", end: "02-28" },
-    March: { start: "03-01", end: "03-31" },
-    April: { start: "04-01", end: "04-30" },
-    May: { start: "05-01", end: "05-31" },
-    June: { start: "06-01", end: "06-30" },
-    July: { start: "07-01", end: "07-31" },
-    August: { start: "08-01", end: "08-31" },
-    September: { start: "09-01", end: "09-30" },
-    October: { start: "10-01", end: "10-31" },
-    November: { start: "11-01", end: "11-30" },
-    December: { start: "12-01", end: "12-31" }
+    January: { start: "01-01-2025", end: "01-31-2025" },
+    February: { start: "02-01-2025", end: "02-28-2025" },
+    March: { start: "03-01-2025", end: "03-31-2025" },
+    April: { start: "04-01-2025", end: "04-30-2025" },
+    May: { start: "05-01-2025", end: "05-31-2025" },
+    June: { start: "06-01-2025", end: "06-30-2025" },
+    July: { start: "07-01-2025", end: "07-31-2025" },
+    August: { start: "08-01-2025", end: "08-31-2025" },
+    September: { start: "09-01-2025", end: "09-30-2025" },
+    October: { start: "10-01-2025", end: "10-31-2025" },
+    November: { start: "11-01-2025", end: "11-30-2025" },
+    December: { start: "12-01-2025", end: "12-31-2025" }
 };
 
 //budget set garchha click garda
@@ -39,27 +39,50 @@ setBudgetBtn.addEventListener('click',()=>{
     totalBudget.textContent = estimatedBudget;
     updateRemainingBalance();
     
-    localStorage.setItem('selectedMonth', monthSelect); // local storage ma selected month rakhchha
-    updateDateRange(monthSelect);//each month ko range update garchha
+    localStorage.setItem('selectedMonth', selectMonth.value); // local storage ma selected month rakhchha
+    updateDateRange(selectMonth.value);//each month ko range update garchha
 }); 
 
 // monthSelect.addEventListener('change', ()=>{
 //  const selectedMonth = monthSelect.value;
 // })
 
+monthSelect.addEventListener('change', () => {
+    const selectedMonth = monthSelect.value;
+    updateDateRange(selectedMonth);
+    localStorage.setItem('selectedMonth', selectedMonth.value);  // Store the new month selection
+});
+
+
 
 function updateDateRange(month){
     const range = monthRanges[month];//starting ra ending dates range ko laagi
     if(range){
-        const currentYear =new Date().getFullYear();
-        expenseDateInput.min = `${currentYear}-${range.start}`;
-        expenseDateInput.max = `${currentYear}-${range.end}`;   
-    }
+        const currentYear = new Date().getFullYear();
+        
+        const [startMonth, startDay] = range.start.split("-");
+        const [endMonth, endDay] = range.end.split("-");
+        expenseDateInput.min = `${currentYear}-${startMonth}-${startDay}`;
+        expenseDateInput.max = `${currentYear}-${endMonth}-${endDay}`;     
+ }
 }
 
-//
+document.addEventListener("DOMContentLoaded", function() {
+    // Retrieve the selected month from localStorage or default to 'January'
+    const savedMonth = localStorage.getItem('selectedMonth') || 'January';
+    
+    // Set the dropdown value to the saved month
+    monthSelect.value = savedMonth;
+    
+    // Update the date range based on the saved month
+    updateDateRange(savedMonth);
+});
+
+
 const selectedMonth = monthSelect.value || "January";
 updateDateRange(selectedMonth);
+
+
 
 
 //expenses handle garna ko laagi 
@@ -92,10 +115,14 @@ setExpenseBtn.addEventListener('click',()=>{
    totalExpense.textContent = totalExpenseAmount;
    updateRemainingBalance();
    budgetWarning.innerText = '';
+
+
+   //budegt sakinu lagda warning message pathauchha
+    if ((estimatedBudget - totalExpenseAmount) < (estimatedBudget * 0.1)) {
+        budgetWarning.innerText = "Warning: Low Budget!";
+        budgetWarning.style.color = 'red';
+    }
    
-//    if (totalExpenseAmount > parseFloat(totalBudget.textContent)) {
-//     alert("You are out of Budget!!!");
-// }
    
     document.getElementById('total-expenses').textContent = totalExpenseAmount;
 
