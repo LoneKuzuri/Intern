@@ -22,14 +22,20 @@ const monthRanges = {
     November: { start: "11-01-2025", end: "11-30-2025" },
     December: { start: "12-01-2025", end: "12-31-2025" }
 };
+const addBudgetBtn = document.getElementById('addBudget');
 
+addBudgetBtn.disabled = true;//on click ma add garna mildaina 
 //budget set garchha click garda
 setBudgetBtn.addEventListener('click',()=>{
     const selectMonth = document.getElementById('month-select').value;
     const estimatedBudget = parseFloat(document.getElementById('budget').value);
     const sumMonth = document.getElementById('summary-month');
    
-    
+  if(!monthSelect.value){
+    alert("Please select a month.");
+    return;
+  }  
+
     if (isNaN(estimatedBudget) || estimatedBudget <= 0) {
         alert("Please enter a valid budget!");
         return;
@@ -41,11 +47,29 @@ setBudgetBtn.addEventListener('click',()=>{
     
     localStorage.setItem('selectedMonth', selectMonth.value); // local storage ma selected month rakhchha
     updateDateRange(selectMonth.value);//each month ko range update garchha
+
+    addBudgetBtn.disabled = false;//on click ma add garna milchha
 }); 
 
-// monthSelect.addEventListener('change', ()=>{
-//  const selectedMonth = monthSelect.value;
-// })
+addBudgetBtn.addEventListener('click', () =>{
+    const additionalBudget = parseFloat(document.getElementById('budget').value);
+    
+    if(isNaN(additionalBudget) || additionalBudget <= 0){
+        alert("Please enter a valid amount");
+        return;
+    }
+    const currentBudget = parseFloat(totalBudget.textContent);
+    const newBudget = currentBudget + additionalBudget;
+
+    if(!monthSelect.value){
+        alert("Please select a month.");
+        return;
+      }  
+
+    totalBudget.textContent = newBudget;
+    updateRemainingBalance();
+    
+});
 
 monthSelect.addEventListener('change', () => {
     const selectedMonth = monthSelect.value;
@@ -76,7 +100,11 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // Update the date range based on the saved month
     updateDateRange(savedMonth);
+
+    document.getElementById('budget').value = '';
 });
+
+
 
 
 const selectedMonth = monthSelect.value || "January";
@@ -187,10 +215,4 @@ editBtn.addEventListener('click', ()=>{
     remainBudget.textContent = remaining;
  }
 
-
-
-
-
-
-
-
+ 
