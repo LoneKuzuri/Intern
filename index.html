@@ -27,6 +27,7 @@
         <option value="November">Nov</option>
         <option value="December">Dec</option>
       </select>
+
     </div>
 
     <!-- Budget input -->
@@ -36,6 +37,19 @@
       <button id="setBudget">Set Budget</button>
     </div>
 
+    <!-- For Expenses Category-->
+     <div class="expenses-category">
+        <label>Select Your Category:</label>
+        <select id="category">
+            <option value="">Select Your Category</option>
+
+            <option value="Food">Food</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Transportation">Transportation</option>
+            <option value="Others">Others</option>
+
+        </select>
+     </div>
     <!-- Expense input -->
     <div class="input-class">
       <h2>Expenses</h2>
@@ -55,10 +69,11 @@
     </div>
 
     <!-- Expense list -->
-    <table>
+    <table id="tables">
       <thead>
         <tr>
           <th>Date</th>
+          <th>Category</th>
           <th>Expense Name</th>
           <th>Amount (Rs.)</th>
           <th>Actions</th>
@@ -66,6 +81,17 @@
       </thead>
       <tbody id="expense-table-body"></tbody>
     </table>
+    <!-- Using Filter -->
+    <div class="filter">
+      <label>Choose a Category</label>
+      <select id="filter-category">
+        <option value="All">All</option>
+        <option value="Food">Food</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Transportation">Transportation</option>
+        <option value="Others">Others</option>
+      </select>
+    </div>
   </div>
 
   <script src="budget.js"></script>

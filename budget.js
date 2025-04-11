@@ -1,8 +1,15 @@
+
 let totalBudget = document.getElementById('budget-amount');
 const remainBudget = document.getElementById('remaining-balance');
 const setBudgetBtn = document.getElementById('setBudget');
 const monthSelect = document.getElementById('month-select');
 const expenseDateInput = document.getElementById('expense-date');
+
+const filtered= document.getElementById('filter-category');
+
+const tables = document.getElementById('tables')
+
+tables.style.display="none";
 
 const monthRanges = {
   January: { start: "01-01", end: "01-31" },
@@ -19,6 +26,8 @@ const monthRanges = {
   December: { start: "12-01", end: "12-31" }
 };
 
+let excategory = [];
+
 setBudgetBtn.addEventListener('click', () => {
   const selectedMonth = monthSelect.value;
   const estimatedBudget = parseFloat(document.getElementById('budget').value);
@@ -28,6 +37,9 @@ setBudgetBtn.addEventListener('click', () => {
     alert("Please enter a valid budget!");
     return;
   }
+  if(monthSelect===''){
+    alert("Plz Select Your Month")
+  };
 
   sumMonth.textContent = `Budget Summary of ${selectedMonth}`;
   totalBudget.textContent = estimatedBudget;
@@ -57,7 +69,9 @@ function updateDateRange(month) {
 
 document.addEventListener("DOMContentLoaded", () => {
   const savedMonth = localStorage.getItem('selectedMonth') || "January";
-  monthSelect.value = savedMonth;
+  monthSelect.value = '';
+  console.log(savedMonth);
+  
   updateDateRange(savedMonth);
 });
 
@@ -71,6 +85,12 @@ setExpenseBtn.addEventListener('click', () => {
   const totalExpense = document.getElementById('total-expenses');
   const budgetWarning = document.getElementById('warning-message');
 
+
+
+  const budgetCategory = document.getElementById('category').value;
+  tables.style.display="block";
+
+
   if (!totalBudget || !expenseDate || !expenseName || isNaN(expenseBudget)) {
     alert("Please fill the empty fields!!!");
     return;
@@ -81,57 +101,26 @@ setExpenseBtn.addEventListener('click', () => {
     budgetWarning.innerText = `No budget left for more expenses!!!`;
     return;
   }
-
   totalExpenseAmount += expenseBudget;
   totalExpense.textContent = totalExpenseAmount;
   updateRemainingBalance();
   budgetWarning.innerText = '';
 
-  const expenseTable = document.getElementById('expense-table-body');
-  const newRow = document.createElement('tr');
+if(budgetCategory ===''){
+    alert("Please Select Your Category");
+    return;    
+}
+else{
 
-  const dateCell = document.createElement('td');
-  const nameCell = document.createElement('td');
-  const budgetCell = document.createElement('td');
-  const actionCell = document.createElement('td');
-  const editBtn = document.createElement('button');
-  const deleteBtn = document.createElement('button');
-
-  dateCell.textContent = expenseDate;
-  nameCell.textContent = expenseName;
-  budgetCell.textContent = expenseBudget;
-  editBtn.textContent = 'Edit';
-  deleteBtn.textContent = 'Delete';
-
-  newRow.appendChild(dateCell);
-  newRow.appendChild(nameCell);
-  newRow.appendChild(budgetCell);
-  newRow.appendChild(actionCell);
-  actionCell.appendChild(editBtn);
-  actionCell.appendChild(deleteBtn);
-  expenseTable.appendChild(newRow);
-
-  document.getElementById('expense-name').value = '';
-  document.getElementById('expense-budget').value = '';
-  document.getElementById('expense-date').value = '';
-
-  deleteBtn.addEventListener('click', () => {
-    totalExpenseAmount -= parseFloat(budgetCell.textContent);
-    totalExpense.textContent = totalExpenseAmount;
-    updateRemainingBalance();
-    expenseTable.removeChild(newRow);
-  });
-
-  editBtn.addEventListener('click', () => {
-    totalExpenseAmount -= parseFloat(budgetCell.textContent);
-    totalExpense.textContent = totalExpenseAmount;
-
-    document.getElementById('expense-date').value = dateCell.textContent;
-    document.getElementById('expense-name').value = nameCell.textContent;
-    document.getElementById('expense-budget').value = budgetCell.textContent;
-    updateRemainingBalance();
-    expenseTable.removeChild(newRow);
-  });
+  let ex= {
+  expenseDate,
+  expenseName,
+  budgetCategory,
+  expenseBudget,
+}
+excategory.push(ex);
+displayFilter(excategory);
+} 
 });
 
 function updateRemainingBalance() {
@@ -139,3 +128,73 @@ function updateRemainingBalance() {
   const remaining = estimatedBudget - totalExpenseAmount;
   remainBudget.textContent = remaining;
 }
+
+// Filtering Items 
+filtered.addEventListener('change',(e)=>{
+  let filteredItems = [];
+
+  const item = e.target.value;
+  if(item === "All"){
+    filteredItems = excategory;
+
+    displayFilter(filteredItems);
+  }else{
+     filteredItems = excategory.filter((ex)=>ex.budgetCategory === item);
+      displayFilter(filteredItems);
+
+
+  }
+  if(filteredItems.length>0 ){
+    tables.style.display="block"
+  }else{
+    tables.style.display="none"
+
+  }
+})
+
+function displayFilter(data){
+  const arrfilter = document.getElementById('expense-table-body');
+arrfilter.innerHTML = '';
+
+data.forEach(index => {
+  const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${index.expenseDate}</td>
+      <td>${index.budgetCategory}</td>
+      <td>${index.expenseName}</td>
+      <td>${index.expenseBudget}</td>
+      <td>
+        <button class="edit-btn">Edit</button>
+        <button class="delete-btn">Delete</button>
+      </td>`;
+    arrfilter.appendChild(row);
+
+
+   // Edit button functionality
+   const editBtn = row.querySelector('.edit-btn');
+   editBtn.addEventListener('click', () => {
+     document.getElementById('expense-date').value = index.expenseDate;
+     document.getElementById('expense-name').value = index.expenseName;
+     document.getElementById('expense-budget').value = index.expenseBudget;
+      document.getElementById('category').value=index.budgetCategory;
+
+
+
+     excategory = excategory.filter(expense => expense !== index);  // Remove from array
+     displayFilter(excategory);  // Update the table
+   });
+
+   // Delete button functionality
+   const deleteBtn = row.querySelector('.delete-btn');
+   deleteBtn.addEventListener('click', () => {
+     excategory = excategory.filter(expense => expense !== index);  // Remove from array
+     displayFilter(excategory);  // Update the table
+
+     totalExpenseAmount -= items.expenseBudget;  // Subtract from total expense
+     totalExpense.textContent = totalExpenseAmount;
+     updateRemainingBalance();
+   });
+
+})
+}
+ 

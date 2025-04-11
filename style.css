@@ -1,6 +1,7 @@
 body{
     font-family: 'Segoe UI', sans-serif;
-    background: #0adceb;
+    background:linear-gradient(to right, #0adceb, #0aeb8d);
+    background-size: 100% 100%;
     padding: 3px;
 }
 
@@ -9,7 +10,7 @@ body{
     padding: 25px;
     max-width: 600px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background: #0aeb8d;
+    background: white;
     border-radius: 10px;
 }
 
@@ -37,6 +38,7 @@ button{
     font-weight: bold;
     transition: background-color 0.3s ease;
     margin-right: 5px;
+    margin-top:5px;
 }
 
 button:hover{
@@ -47,7 +49,7 @@ select{
     padding: 8px;
     border-radius: 6px;
     cursor: pointer;
-    background-color: #01ccffbd;
+    background-color:rgba(1, 204, 255, 0.51);
     font-size: 14px;
 }
 
@@ -57,7 +59,7 @@ select{
  border-radius: 10px;
  margin-bottom: 15px;
  font-weight: bold;
- color: red;
+ color: green;
 }
 
 
@@ -70,7 +72,11 @@ table{
 
 th, td{
   width: 20vw;
-  border: 1px solid rgb(122, 13, 13);
+  border: 1px solid rgb(143, 133, 133);
   text-align: left;
 }
 
+.filter{
+    margin-top:10px;
+    text-align:right;
+}
